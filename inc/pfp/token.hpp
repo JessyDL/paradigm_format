@@ -11,7 +11,7 @@
 	#define DEBUG_STATE_NAME(x)                                                                                        \
 		constexpr static std::string_view _DEBUG_STATE_NAME {                                                          \
 			#x                                                                                                         \
-		}
+		};
 	#define DEBUG_INJECT_STATE_NAME() _DEBUG_STATE_NAME
 #else
 	#define DEBUG_STATE_NAME(x)

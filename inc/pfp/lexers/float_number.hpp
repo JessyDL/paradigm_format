@@ -6,7 +6,7 @@
 namespace pfp {
 class float_number_state_t : public tokenizer_state_t {
   public:
-	DEBUG_STATE_NAME(float_number_state_t);
+	DEBUG_STATE_NAME(float_number_state_t)
 
 	token_candidate_t handle(std::string_view input, std::size_t start) override {
 		std::size_t i	= start;
