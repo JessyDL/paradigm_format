@@ -1,6 +1,6 @@
 #include <filesystem>
-#include <fstream>
 #include <format>
+#include <fstream>
 #include <stdexcept>
 
 namespace utils {
@@ -20,7 +20,8 @@ std::string load_data(std::filesystem::path path) {
 			}
 		}
 
-		throw std::runtime_error(std::format("Could not find end of '/// ENDCOMMENT' directive, please double check {}", path.string()));
+		throw std::runtime_error(
+		  std::format("Could not find end of '/// ENDCOMMENT' directive, please double check {}", path.string()));
 	}
 	return data;
 }

@@ -1,5 +1,3 @@
 #include "pfp/ast.hpp"
 
-namespace pfp {
-
-}
+namespace pfp {}

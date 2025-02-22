@@ -65,6 +65,6 @@ TEST_CASE("lexer_test", "[lexer]") {
 		REQUIRE(csv_type == TOKEN_TYPE_STR[std::to_underlying(token.type)]);
 		REQUIRE(csv_value == token.value);
 
-		++csv_iter; 
+		++csv_iter;
 	}
 }

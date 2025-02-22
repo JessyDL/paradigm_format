@@ -1,9 +1,9 @@
 #include <iostream>
 #include <string>
 
+#include "pfp/ast.hpp"
 #include "pfp/lexer.hpp"
 #include "pfp/parser.hpp"
-#include "pfp/ast.hpp"
 
 
 // **Usage Example**
@@ -22,10 +22,10 @@ var3:string;
 		std::cout << token->type_string() << ": " << token->value << "\n";
 	}*/
 
-    auto parser	   = pfp::parser_t(tokenizer.tokenize(input));
-	auto ast_nodes	= parser.parse();
+	auto parser	   = pfp::parser_t(tokenizer.tokenize(input));
+	auto ast_nodes = parser.parse();
 
-    if(!ast_nodes.empty()) {
+	if(!ast_nodes.empty()) {
 		for(const auto& node : ast_nodes) {
 			node->print();
 		}
