@@ -38,7 +38,7 @@ file(WRITE "${VERSION_HEADER_PATH}"
     "static constexpr unsigned int PROJECT_VERSION_MAJOR = ${PROJECT_VERSION_MAJOR};\n"
     "static constexpr unsigned int PROJECT_VERSION_MINOR = ${PROJECT_VERSION_MINOR};\n"
     "static constexpr unsigned int PROJECT_VERSION_PATCH = ${PROJECT_VERSION_PATCH};\n"
-    "static constexpr std::string_view PROJECT_GIT_SHA1 \"${GIT_SHA1}\";\n"
+    "static constexpr std::string_view PROJECT_GIT_SHA1 = \"${GIT_SHA1}\";\n"
     "} // namespace pfp\n"
 )
 
