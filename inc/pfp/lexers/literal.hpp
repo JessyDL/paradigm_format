@@ -7,13 +7,12 @@ namespace pfp {
 class literal_state_t : public tokenizer_state_t {
   private:
   public:
-	DEBUG_STATE_NAME(literal_state_t)
 	token_candidate_t handle(std::string_view input, std::size_t start) override {
 		std::size_t i				 = start;
 		constexpr char8_t literals[] = {'"', '`', '\''};
 
 		if(std::find(std::begin(literals), std::end(literals), input[i]) == std::end(literals)) {
-			return {std::nullopt, 0, DEBUG_INJECT_STATE_NAME()};
+			return {};
 		}
 
 		char8_t literal = input[i];
@@ -26,9 +25,7 @@ class literal_state_t : public tokenizer_state_t {
 			}
 			if(i < input.size()) {
 				i += 3;
-				return {token_t {input.substr(start, i - start), token_t::type_t::string},
-						i - start,
-						DEBUG_INJECT_STATE_NAME()};
+				return {token_t {input.substr(start, i - start), token_t::type_t::string}, i - start};
 			}
 		} else {
 			i++;
@@ -37,13 +34,11 @@ class literal_state_t : public tokenizer_state_t {
 			}
 			if(i < input.size()) {
 				i++;
-				return {token_t {input.substr(start, i - start), token_t::type_t::string},
-						i - start,
-						DEBUG_INJECT_STATE_NAME()};
+				return {token_t {input.substr(start, i - start), token_t::type_t::string}, i - start};
 			}
 		}
 
-		return {std::nullopt, 0, DEBUG_INJECT_STATE_NAME()};
+		return {};
 	}
 };
 }	 // namespace pfp

@@ -7,17 +7,6 @@
 #include <stdexcept>
 #include <string_view>
 
-#ifdef _DEBUG
-	#define DEBUG_STATE_NAME(x)                                                                                        \
-		constexpr static std::string_view _DEBUG_STATE_NAME {                                                          \
-			#x                                                                                                         \
-		};
-	#define DEBUG_INJECT_STATE_NAME() _DEBUG_STATE_NAME
-#else
-	#define DEBUG_STATE_NAME(x)
-	#define DEBUG_INJECT_STATE_NAME()
-#endif
-
 namespace pfp {
 // Define token_t Structure
 struct token_t {
@@ -71,9 +60,6 @@ struct token_t {
 struct token_candidate_t {
 	std::optional<token_t> token;
 	std::size_t lengthConsumed;	   // How many characters were used?
-#ifdef _DEBUG
-	std::string_view _state_name;	 // For debugging
-#endif
 
 	bool isValid() const { return token.has_value(); }
 };
