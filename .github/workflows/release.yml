@@ -17,7 +17,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Configure CMake
-        run: cmake -B build -DCMAKE_BUILD_TYPE=Release -G Ninja
+        run: cmake -B build -DCMAKE_BUILD_TYPE=Release
 
       - name: Build
         run: cmake --build build
@@ -34,6 +34,19 @@ jobs:
           else
             echo "VERSION file not found!"
             exit 1
+          fi
+
+      - name: Verify Version
+        shell: bash
+        run: |
+          BRANCH_NAME=${GITHUB_REF#refs/heads/}
+          EXPECTED_BRANCH="release/${PROJECT_VERSION}"
+
+          if [[ "$BRANCH_NAME" != "$EXPECTED_BRANCH" ]]; then
+            echo "Error: Branch name ($BRANCH_NAME) does not match expected format (release/${PROJECT_VERSION})"
+            exit 1
+          else
+            echo "Branch name is correctly formatted: $BRANCH_NAME"
           fi
 
       - name: Package with CPack

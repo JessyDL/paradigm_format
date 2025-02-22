@@ -4,6 +4,7 @@
 #include "pfp/lexer.hpp"
 #include "pfp/token.hpp"
 #include <format>
+#include <utility>
 
 static constexpr std::string_view TOKEN_TYPE_STR[std::to_underlying(pfp::token_t::type_t::_end)] =
   {"IDENTIFIER", "NUMBER", "SYMBOL", "WHITESPACE", "STRING", "COMMENT", "PREPROCESSOR", "TEMPLATE"};
