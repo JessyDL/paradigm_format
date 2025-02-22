@@ -1,0 +1,83 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "release/*"
+
+jobs:
+  package:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        if: runner.os == 'Linux'
+        run: sudo apt update && sudo apt install -y cmake ninja-build
+
+      - name: Configure CMake
+        run: cmake -B build -DCMAKE_BUILD_TYPE=Release -G Ninja
+
+      - name: Build
+        run: cmake --build build
+        
+      - name: Extract Full Version  
+        shell: bash
+        run: |
+          VERSION_FILE="build/VERSION"
+          if [[ -f "$VERSION_FILE" ]]; then
+            VERSION=$(cut -d'-' -f1 "$VERSION_FILE")
+            SHA1=$(cut -d'-' -f2 "$VERSION_FILE")
+            echo "PROJECT_VERSION=$VERSION" >> $GITHUB_ENV
+            echo "GIT_SHA1=$SHA1" >> $GITHUB_ENV
+          else
+            echo "VERSION file not found!"
+            exit 1
+          fi
+
+      - name: Package with CPack
+        run: |
+          cpack --config build/CPackConfig.cmake --package-directory packaged-release
+
+      - name: Upload Packages
+        uses: actions/upload-artifact@v4
+        with:
+          name: packaged-release-${{ runner.os }}
+          path: build/packages/*
+          retention-days: 2
+
+  create-release:
+    runs-on: ubuntu-latest
+    needs: package
+    steps:
+      - name: Download Packaged Releases
+        uses: actions/download-artifact@v4
+        with:
+          name: packaged-release-ubuntu-latest
+          path: packages/linux
+
+      - name: Download Windows Packaged Releases
+        uses: actions/download-artifact@v4
+        with:
+          name: packaged-release-windows-latest
+          path: packages/windows
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.ref_name }}
+          name: Release ${{ env.PROJECT_VERSION }}
+          body: |
+            Version: ${{ env.PROJECT_VERSION }}
+            Commit SHA1: ${{ env.GIT_SHA1 }}
+            - Automatically generated package
+          draft: false
+          prerelease: false
+          files: |
+            packages/linux/*.tar.gz
+            packages/windows/*.zip

@@ -1,0 +1,6 @@
+/// COMMENT
+Issue here was the tokenizer would not properly handle lack of whitespace at the end of the file, this was due to the fact the tokenizer
+if it terminated the input it would actually yield the previous result _again_. This was fixed by adding a post-resume check to see if the
+coroutine handle was done.
+/// ENDCOMMENT
+type Foo:={};

@@ -1,0 +1,9 @@
+type Foo : = { // }
+	var1 : int;
+	var2 : string = { "orig_value" }; // }"}
+}; // }
+
+instance Bar : Foo = {
+	var1 : int;
+	/* var2 : string = {"some_value"};
+};; */};

@@ -1,0 +1,7 @@
+.vs/
+.vscode/
+build/
+out/
+.DS_Store
+# file is auto generated
+/inc/pfp/version.hpp
