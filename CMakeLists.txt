@@ -3,6 +3,7 @@ cmake_minimum_required(VERSION 3.20)
 project(paradigm_format_generator VERSION 0.1.0 LANGUAGES CXX)
 
 option(ENABLE_TESTS "Enable tests" OFF)
+option(PFP_INSTALL_HOOKS "Install the git hooks" ON)
 
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
@@ -22,6 +23,21 @@ if(GIT_FOUND)
     endif()
 else()
     set(GIT_SHA1 "unknown")
+endif()
+
+if(PFP_INSTALL_HOOKS AND GIT_FOUND)
+    set(HOOKS_DIR "${CMAKE_SOURCE_DIR}/scripts/hooks")
+    set(GIT_HOOKS_DIR "${CMAKE_SOURCE_DIR}/.git/hooks")
+
+    file(MAKE_DIRECTORY "${GIT_HOOKS_DIR}")
+
+    configure_file(${HOOKS_DIR}/pre-commit ${GIT_HOOKS_DIR}/pre-commit COPYONLY)
+
+    if(NOT WIN32)
+        execute_process(COMMAND chmod +x ${GIT_HOOKS_DIR}/pre-commit)
+    endif()
+
+    message(STATUS "Git pre-commit hook installed")
 endif()
 
 set(PROJECT_FULL_VERSION "${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}.${PROJECT_VERSION_PATCH}-${GIT_SHA1}")

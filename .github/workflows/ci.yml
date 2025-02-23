@@ -37,7 +37,7 @@ jobs:
           fi
 
       - name: Configure CMake
-        run: cmake -B build -DCMAKE_BUILD_TYPE=Release -DENABLE_TESTS=ON 
+        run: cmake -B build -DCMAKE_BUILD_TYPE=Release -DENABLE_TESTS=ON -DPFP_INSTALL_HOOKS=OFF
 
       - name: Build
         run: cmake --build build ${{ env.CTEST_CONFIG_ARG }}

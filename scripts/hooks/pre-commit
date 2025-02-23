@@ -1,0 +1,39 @@
+#!/bin/bash
+
+# Check if clang-format is available
+if ! command -v clang-format &> /dev/null; then
+    echo "Warning: clang-format not found! Skipping formatting check."
+fi
+
+# Get a list of staged files in inc/, src/, and tests/ that match C++ extensions
+files=$(git diff --name-only --diff-filter=ACM --staged | grep -E '^(inc|src|tests)/.*\.(c|cc|cpp|h|hpp)$')
+
+if [[ -z "$files" ]]; then
+    exit 0
+fi
+
+# Track modified files
+modified_clang_format=()
+
+echo "Running clang-format on committed files..."
+for file in $files; do
+    if command -v clang-format &> /dev/null; then
+        before_md5=$(md5sum "$file" | awk '{ print $1 }')
+        clang-format -i "$file"
+        after_md5=$(md5sum "$file" | awk '{ print $1 }')
+
+        if [[ "$before_md5" != "$after_md5" ]]; then
+            modified_clang_format+=("$file")
+            git add "$file"
+        fi
+    fi
+done
+
+if [[ ${#modified_clang_format[@]} -ne 0 ]]; then
+    echo "Clang-Format modified the following files:"
+    printf "%s\n" "${modified_clang_format[@]}"
+else
+    echo "No files modified by Clang-Format."
+fi
+
+exit 0

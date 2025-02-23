@@ -1,10 +1,12 @@
-#include "pfp/lexer.hpp"
-#include "catch2/catch_test_macros.hpp"
-#include "catch2/generators/catch_generators.hpp"
-#include "common.hpp"
-#include "pfp/token.hpp"
 #include <format>
 #include <utility>
+
+#include "catch2/catch_test_macros.hpp"
+#include "catch2/generators/catch_generators.hpp"
+
+#include "common.hpp"
+#include "pfp/lexer.hpp"
+#include "pfp/token.hpp"
 
 static constexpr std::string_view TOKEN_TYPE_STR[std::to_underlying(pfp::token_t::type_t::_end)] =
   {"IDENTIFIER", "NUMBER", "SYMBOL", "WHITESPACE", "STRING", "COMMENT", "PREPROCESSOR", "TEMPLATE"};
