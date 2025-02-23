@@ -1,7 +1,7 @@
+#include "pfp/lexer.hpp"
 #include "catch2/catch_test_macros.hpp"
 #include "catch2/generators/catch_generators.hpp"
 #include "common.hpp"
-#include "pfp/lexer.hpp"
 #include "pfp/token.hpp"
 #include <format>
 #include <utility>
@@ -37,7 +37,7 @@ std::vector<std::pair<std::string, std::string>> parse_csv(std::string_view csv,
 
 TEST_CASE("lexer_test", "[lexer]") {
 	auto data_filename = GENERATE("basic", "comments", "regression_whitespace_eof");
-	auto data_file	   = std::format("./data/lexer/{}.ptf", data_filename);
+	auto data_file	   = std::format("data/lexer/{}.ptf", data_filename);
 	auto csv_file	   = std::format("{}.csv", data_file);
 	auto data		   = utils::load_data(data_file);
 	auto csv		   = utils::load_data(csv_file);
@@ -45,7 +45,7 @@ TEST_CASE("lexer_test", "[lexer]") {
 	auto tokens = parse_csv(csv, csv_file);
 
 
-	pfp::tokenizer_t tokenizer;
+	pfp::lexer_t tokenizer;
 	auto gen = tokenizer.tokenize(data);
 
 	auto csv_iter = tokens.begin();

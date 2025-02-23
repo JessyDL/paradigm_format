@@ -2,7 +2,6 @@ cmake_minimum_required(VERSION 3.20)
 
 project(paradigm_format_generator VERSION 0.1.0 LANGUAGES CXX)
 
-option(ENABLE_DEVMODE  "Enables devmode, which facilitates local testing" OFF)
 option(ENABLE_TESTS "Enable tests" OFF)
 
 set(CMAKE_CXX_STANDARD 23)
@@ -104,10 +103,6 @@ install(FILES ${PUBLIC_HEADER_FILES}
 if (ENABLE_TESTS)
     enable_testing()
     add_subdirectory(tests)
-endif()
-
-if (ENABLE_DEVMODE)
-    add_subdirectory(bin)
 endif()
 
 

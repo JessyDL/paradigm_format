@@ -36,8 +36,9 @@ class float_number_state_t : public tokenizer_state_t {
 			return {};
 		}
 
-		if(i > start)
+		if(i > start) {
 			return {token_t {input.substr(start, i - start), token_t::type_t::number}, i - start};
+		}
 		return {};
 	}
 };

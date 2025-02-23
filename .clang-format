@@ -64,6 +64,7 @@ BreakConstructorInitializers: BeforeColon
 BreakBeforeTernaryOperators: true
 AllowShortBlocksOnASingleLine: false
 SpaceBeforeRangeBasedForLoopColon: true
+InsertBraces: true
 CommentPragmas:  '.* \\(param|tparam|brief|detail|details|return|returns|note|warning|todo)'
 # EmptyLineBeforeAccessModifier: LogicalBlock
 # IndentRequires: true

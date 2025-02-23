@@ -6,7 +6,7 @@
 // make a fixture
 class DataLoader {
 	std::string input;
-	pfp::tokenizer_t tokenizer;
+	pfp::lexer_t tokenizer;
 
   public:
 	pfp::parser_t parser;

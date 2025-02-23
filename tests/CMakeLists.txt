@@ -18,7 +18,7 @@ FetchContent_MakeAvailable(catch2)
 
 add_executable(parser_tests
   "src/types.cpp"
-  "src/tokenizer.cpp"
+  "src/lexer.cpp"
 )
 
 target_link_libraries(parser_tests PRIVATE Catch2WithMain parser)

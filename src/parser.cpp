@@ -8,8 +8,9 @@ parser_t::parser_t(token_generator_t tokenizer) : tokenizer(std::move(tokenizer)
 }
 
 std::unique_ptr<ast_node_t> parser_t::parseExpression() {
-	if(!currentToken)
+	if(!currentToken) {
 		return nullptr;
+	}
 
 	if(currentToken->type == token_t::type_t::identifier) {
 		std::string name = std::string(currentToken->value);
@@ -28,17 +29,20 @@ std::unique_ptr<ast_node_t> parser_t::parseExpression() {
 
 std::unique_ptr<ast_node_t> parser_t::parseFunction() {
 	auto templateNode = std::optional {parseTemplate()};
-	if(!currentToken || currentToken->value != "function")
+	if(!currentToken || currentToken->value != "function") {
 		return nullptr;
+	}
 	advance();	  // Skip "function"
 
-	if(!currentToken || currentToken->type != token_t::type_t::identifier)
+	if(!currentToken || currentToken->type != token_t::type_t::identifier) {
 		return nullptr;
+	}
 	std::string functionName = std::string(currentToken->value);
 	advance();
 
-	if(!currentToken || currentToken->value != "(")
+	if(!currentToken || currentToken->value != "(") {
 		return nullptr;
+	}
 	advance();
 
 	auto functionNode = std::make_unique<ast_function_node_t>(functionName, std::move(templateNode));
@@ -46,13 +50,15 @@ std::unique_ptr<ast_node_t> parser_t::parseFunction() {
 	while(currentToken && currentToken->type == token_t::type_t::identifier) {
 		std::string paramType = std::string(currentToken->value);
 		advance();
-		if(!currentToken || currentToken->type != token_t::type_t::identifier)
+		if(!currentToken || currentToken->type != token_t::type_t::identifier) {
 			return nullptr;
+		}
 		std::string paramName = std::string(currentToken->value);
 		advance();
 		functionNode->params.emplace_back(paramType, paramName);
-		if(currentToken->value == ",")
+		if(currentToken->value == ",") {
 			advance();
+		}
 	}
 
 	if(!currentToken || currentToken->value != ")") {
@@ -127,12 +133,14 @@ std::unique_ptr<ast_template_node_t> parser_t::parseTemplate() {
 	while(currentToken && currentToken->type == token_t::type_t::identifier) {
 		templateParams.push_back(std::string(currentToken->value));
 		advance();
-		if(currentToken->value == ",")
+		if(currentToken->value == ",") {
 			advance();
+		}
 	}
 
-	if(!currentToken || currentToken->value != ">")
+	if(!currentToken || currentToken->value != ">") {
 		return nullptr;
+	}
 	advance();	  // Move past `>`
 
 	return std::make_unique<ast_template_node_t>(templateParams);

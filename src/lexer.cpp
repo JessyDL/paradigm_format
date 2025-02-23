@@ -14,7 +14,7 @@
 #include "pfp/lexers/whitespace.hpp"
 
 namespace pfp {
-tokenizer_t::tokenizer_t() {
+lexer_t::lexer_t() {
 	states.push_back(std::make_pair(std::make_unique<whitespace_state_t>(), "whitespace"));
 	states.push_back(std::make_pair(std::make_unique<float_number_state_t>(), "floating point"));
 	states.push_back(std::make_pair(std::make_unique<keyword_state_t>(), "identifier"));
@@ -27,7 +27,7 @@ tokenizer_t::tokenizer_t() {
 	errorBuffer.reserve(1024);
 }
 
-token_generator_t tokenizer_t::tokenize(std::string_view input) {
+token_generator_t lexer_t::tokenize(std::string_view input) {
 	std::size_t i = 0;
 
 	while(i < input.size()) {
@@ -79,7 +79,8 @@ token_generator_t tokenizer_t::tokenize(std::string_view input) {
 		}
 
 		if(bestCandidate.isValid()) {
-			co_yield bestCandidate.token.value();
+			co_yield bestCandidate.token.value_or(
+			  token_t {"Candidate token was set but had no value", token_t::type_t::error});
 			i += bestCandidate.lengthConsumed;
 		} else {
 			errorBuffer = "Unexpected character at position " + std::to_string(i) + " in input value '" +
