@@ -80,6 +80,7 @@ target_sources(parser PUBLIC ${PUBLIC_HEADER_FILES} PRIVATE ${PRIVATE_HEADER_FIL
 if (MSVC)
     target_compile_options(parser PRIVATE /W4 /WX)
     target_compile_options(parser PRIVATE /permissive- /Zc:preprocessor /Zc:__cplusplus)
+    target_compile_options(parser PRIVATE /MP)
 else()
     target_compile_options(parser PRIVATE -Wall -Wextra -Wpedantic -Werror)
     target_compile_options(parser PRIVATE -pedantic-errors)

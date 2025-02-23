@@ -14,8 +14,8 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Check Formatting
-        run: find . -name '*.cpp' -o -name '*.h' | xargs clang-format -n --Werror
-    
+        run: find inc src tests -type f \( -name '*.cpp' -o -name '*.h' -o -name '*.hpp' \) | xargs clang-format -n --Werror
+
   build:
     runs-on: ${{ matrix.os }}
     strategy:
@@ -27,11 +27,20 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Detect Multi-Config Generator
+        shell: bash
+        run: |
+          if cmake -B build -LA | grep -q CMAKE_CONFIGURATION_TYPES; then
+            echo "CTEST_CONFIG_ARG=--config Release" >> $GITHUB_ENV
+          else
+            echo "CTEST_CONFIG_ARG=" >> $GITHUB_ENV
+          fi
+
       - name: Configure CMake
-        run: cmake -B build -DCMAKE_BUILD_TYPE=Release -DENABLE_TESTS=ON
+        run: cmake -B build -DCMAKE_BUILD_TYPE=Release -DENABLE_TESTS=ON 
 
       - name: Build
-        run: cmake --build build
+        run: cmake --build build ${{ env.CTEST_CONFIG_ARG }}
 
       - name: Run Tests
         run: ctest --test-dir build --output-on-failure

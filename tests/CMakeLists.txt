@@ -19,7 +19,17 @@ FetchContent_MakeAvailable(catch2)
 add_executable(parser_tests
   "src/types.cpp"
   "src/lexer.cpp"
+  "src/common.cpp"
 )
+
+if (MSVC)
+    target_compile_options(parser_tests PRIVATE /W4 /WX)
+    target_compile_options(parser_tests PRIVATE /permissive- /Zc:preprocessor /Zc:__cplusplus)
+    target_compile_options(parser_tests PRIVATE /MP)
+else()
+    target_compile_options(parser_tests PRIVATE -Wall -Wextra -Wpedantic -Werror)
+    target_compile_options(parser_tests PRIVATE -pedantic-errors)
+endif()
 
 target_link_libraries(parser_tests PRIVATE Catch2WithMain parser)
 include(Catch)
