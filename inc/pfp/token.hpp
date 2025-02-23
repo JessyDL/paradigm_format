@@ -21,7 +21,7 @@ struct token_t {
 		preprocessor,
 		variadic,
 		_end,
-		error
+		error = -1,
 	} type;
 
 	std::string_view type_string() const { return TypeString(type); }

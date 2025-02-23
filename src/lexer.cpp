@@ -9,8 +9,8 @@
 #include "pfp/lexers/literal.hpp"
 #include "pfp/lexers/number.hpp"
 #include "pfp/lexers/operator.hpp"
+#include "pfp/lexers/parametric.hpp"
 #include "pfp/lexers/preprocessor.hpp"
-#include "pfp/lexers/template.hpp"
 #include "pfp/lexers/whitespace.hpp"
 
 namespace pfp {
@@ -20,7 +20,7 @@ lexer_t::lexer_t() {
 	states.push_back(std::make_pair(std::make_unique<keyword_state_t>(), "identifier"));
 	states.push_back(std::make_pair(std::make_unique<operator_state_t>(), "operator"));
 	states.push_back(std::make_pair(std::make_unique<preprocessor_state_t>(), "preprocessor"));
-	states.push_back(std::make_pair(std::make_unique<template_state_t>(), "variadic"));
+	states.push_back(std::make_pair(std::make_unique<parametric_state_t>(), "parametric"));
 	states.push_back(std::make_pair(std::make_unique<number_state_t>(), "number"));
 	states.push_back(std::make_pair(std::make_unique<comment_state_t>(), "comment"));
 	states.push_back(std::make_pair(std::make_unique<literal_state_t>(), "literal"));
@@ -47,7 +47,7 @@ token_generator_t lexer_t::tokenize(std::string_view input) {
 		}
 
 		if(competingCandidates.size() > 1) {
-			// **Check for ambiguity**
+			// Check if there are multiple competing candidates with the same length
 			auto numEqualWinners =
 			  std::count_if(competingCandidates.begin(), competingCandidates.end(), [&](const auto& pair) {
 				  return pair.first.lengthConsumed == bestCandidate.lengthConsumed;

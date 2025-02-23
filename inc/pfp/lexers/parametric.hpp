@@ -5,7 +5,7 @@
 #include <string_view>
 
 namespace pfp {
-class template_state_t : public tokenizer_state_t {
+class parametric_state_t : public tokenizer_state_t {
   public:
 	token_candidate_t handle(std::string_view input, std::size_t start) override {
 		if(input[start] != '<') {

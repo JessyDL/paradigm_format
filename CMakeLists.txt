@@ -81,7 +81,7 @@ set(PRIVATE_HEADER_FILES
     lexers/number
     lexers/operator
     lexers/preprocessor
-    lexers/template
+    lexers/parametric
     lexers/whitespace
 )
 
